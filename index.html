@@ -3,83 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Pro: Auto-activación y Reset</title>
+    <title>AR Test WebXR</title>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; }
+        model-viewer { width: 100%; height: 100vh; background-color: #111; }
         
-        /* Cubrimos toda la pantalla con el visualizador */
-        model-viewer {
-            width: 100%;
-            height: 100vh;
-            background-color: #222;
+        #controls {
+            position: absolute; bottom: 20px; left: 50%;
+            transform: translateX(-50%); z-index: 10;
         }
-
-        /* Estilo del botón de inicio forzado */
-        #start-ar {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
-            font-size: 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            z-index: 100;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        button {
+            padding: 15px 25px; border-radius: 30px; border: none;
+            background: #007bff; color: white; font-weight: bold;
         }
-
-        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <button id="start-ar">🚀 Iniciar Experiencia AR</button>
-
     <model-viewer 
-        id="ar-element"
+        id="ar-model"
         src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
         ar 
-        ar-modes="webxr scene-viewer quick-look" 
-        camera-controls 
+        ar-modes="webxr" 
+        camera-controls
+        ar-placement="floor"
         shadow-intensity="1">
+        
+        <div id="controls" slot="ar-button">
+            <button id="ar-button">ENTRAR EN MODO CÁMARA</button>
+        </div>
     </model-viewer>
 
     <script>
-        const modelViewer = document.querySelector("#ar-element");
-        const startBtn = document.querySelector("#start-ar");
+        const modelViewer = document.querySelector("#ar-model");
+        let lastTap = 0;
 
-        // 1. Iniciar AR automáticamente al pulsar el botón grande
-        startBtn.addEventListener('click', () => {
-            modelViewer.activateAR(); // Fuerza la entrada al modo cámara
-            startBtn.classList.add('hidden'); // Escondemos el botón
-        });
-
-        // 2. Reaparecer el modelo al hacer doble clic
-        // El evento dblclick funciona en la mayoría de navegadores móviles
-        window.addEventListener('dblclick', () => {
-            console.log("Reseteando posición...");
+        // Detector de doble toque mejorado para móviles
+        modelViewer.addEventListener('touchstart', (event) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
             
-            // Forzamos al modelo a volver al centro de la vista del usuario
-            // En WebXR, esto recalibra el "suelo" o la posición del objeto
-            if (modelViewer.canActivateAR) {
-                // Si el modelo se perdió, reiniciamos la sesión o movemos el target
-                const cameraTarget = "0m 0m 0m"; 
-                modelViewer.cameraTarget = cameraTarget;
-                
-                // Pequeño truco: si desapareció del todo, forzamos un leve movimiento 
-                // para que el motor de renderizado lo "busque" de nuevo
+            if (tapLength < 300 && tapLength > 0) {
+                // ACCIÓN AL DOBLE TOQUE:
+                // Reseteamos la escala y posición del objeto
+                modelViewer.scale = "1 1 1";
                 modelViewer.cameraOrbit = "0deg 75deg 105%";
+                modelViewer.cameraTarget = "0m 0m 0m";
+                
+                alert("Posición reseteada"); 
+                event.preventDefault();
             }
+            lastTap = currentTime;
         });
 
-        // Manejo de errores: si el usuario sale del AR, volvemos a mostrar el botón
+        // Intentar que el objeto se "pegue" mejor al detectar el suelo
         modelViewer.addEventListener('ar-status', (event) => {
-            if (event.detail.status === 'not-presenting') {
-                startBtn.classList.remove('hidden');
+            if(event.detail.status === 'session-started'){
+                console.log("Sesión AR activa. Mueve el móvil para detectar el suelo.");
             }
         });
     </script>
