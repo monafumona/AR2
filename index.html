@@ -37,7 +37,7 @@
   }
 
     button{
-    background-color: #4285F4;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 10px;
@@ -55,9 +55,7 @@
 <body>
 
   <h1>Michirealidad aumentada</h1>
-  <button slot="ar-button">
-    VER EN AR
-  </button>
+  
   <model-viewer
     src="cat.glb"
     ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
@@ -68,6 +66,9 @@
     ar-modes="scene-viewer quick-look webxr"
     shadow-intensity="1"
   >
+    <button slot="ar-button">
+    VER EN AR
+    </button>
   </model-viewer>
 
   <p>Pulsa el botoncillo ese pa ver al gatico</p>
