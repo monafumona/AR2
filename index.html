@@ -35,13 +35,29 @@
     bottom: 50px;
     right: 50px;
   }
+
+    button{
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 30px 60px; /* Tamaño del botón */
+    font-size: 35px;    /* Tamaño del texto */
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+  "
+    }
   </style>
 </head>
 
 <body>
 
   <h1>Michirealidad aumentada</h1>
-
+  <button slot="ar-button">
+    VER EN AR
+  </button>
   <model-viewer
     src="cat.glb"
     ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
