@@ -11,26 +11,40 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
+      color: black;
       text-align: center;
     }
 
     h1 {
       padding: 20px;
+      font-size: 60px;
     }
 
     model-viewer {
       width: 100%;
-      height: 500px;
-      background: #222;
+      height: 80vh;
     }
+    p{
+      font-size: 40px;
+    }
+    
+    model-viewer::part(ar-button) {
+    /* 1.5 es un 50% más grande, 2.0 sería el doble */
+    transform: scale(1.5) !important; 
+    
+    /* Ajustamos el origen de la transformación para que no se salga de la pantalla */
+    transform-origin: bottom right; 
+    
+    /* Separación del borde (opcional) */
+    bottom: 30px;
+    right: 30px;
+  }
   </style>
 </head>
 
 <body>
 
-  <h1>Prueba de Realidad Aumentada</h1>
+  <h1>Michirealidad aumentada</h1>
 
   <model-viewer
     src="cat.glb"
@@ -44,7 +58,7 @@
   >
   </model-viewer>
 
-  <p>Pulsa el botón de AR en tu móvil para verlo en tu entorno</p>
+  <p>Pulsa el botoncillo ese pa ver al gatico</p>
 
 </body>
 </html>
