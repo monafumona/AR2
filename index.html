@@ -22,22 +22,18 @@
 
     model-viewer {
       width: 100%;
-      height: 80vh;
+      height: 70vh;
     }
     p{
       font-size: 40px;
     }
     
     model-viewer::part(ar-button) {
-    /* 1.5 es un 50% más grande, 2.0 sería el doble */
-    transform: scale(1.5) !important; 
-    
-    /* Ajustamos el origen de la transformación para que no se salga de la pantalla */
-    transform-origin: bottom right; 
-    
-    /* Separación del borde (opcional) */
-    bottom: 30px;
-    right: 30px;
+    display: block !important; /* Asegura que se comporte como bloque */
+    transform: scale(3.0) !important; /* Hazlo gigante (3 veces su tamaño) */
+    transform-origin: bottom right;
+    bottom: 50px;
+    right: 50px;
   }
   </style>
 </head>
